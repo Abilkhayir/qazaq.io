@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Үрқия Бажимова — Қазақ тілі және әдебиеті</title>
+<title>Үрқия Бажымова — Қазақ тілі және әдебиеті</title>
 <style>
 @font-face {
   font-family: 'VPreside';
@@ -575,11 +575,13 @@
 <!-- HERO -->
 <div class="hero">
   <span class="hero-ornament">📚</span>
-  <h2>Үрқия Бажимованың оқулықтар қоры</h2>
+  <h2>Үрқия Бажымованың оқулықтар қоры</h2>
   <p>Қазақ тілі және әдебиеті пәні бойынша оқу материалдары мен оқулықтар жинағы</p>
 </div>
 
 <!-- MAIN -->
+<div id="loadingBar" style="display:none;position:fixed;top:0;left:0;width:100%;height:4px;z-index:9999;background:linear-gradient(90deg,#1b5e20,#f9a825,#1b5e20);background-size:200%;animation:loadAnim 1.2s linear infinite;"></div>
+<style>@keyframes loadAnim{0%{background-position:0%}100%{background-position:200%}}</style>
 <main>
   <!-- Admin bar (visible when logged in) -->
   <div class="admin-bar" id="adminBar" style="display:none;">
@@ -713,9 +715,10 @@
 <div class="toast" id="toast"></div>
 
 <script>
-// ─── CONFIG: Логин мен парольді осында өзгертіңіз ───
-const ADMIN_LOGIN = "mugalim";      // ← логинді осы жерде өзгертіңіз
-const ADMIN_PASS  = "qazaq2025";   // ← парольді осы жерде өзгертіңіз
+// ─── CONFIG ───
+const ADMIN_LOGIN = "mugalim";
+const ADMIN_PASS  = "qazaq2025";
+const API_URL = "https://script.google.com/macros/s/AKfycbykaH7D0wh4ZE-FpJXk33FvyRcn-yHKCt7TwtW1BqhBr-zLVrAAYbBPa_YVgEZMACMb/exec";
 
 // ─── COVER COLORS ───
 const COVERS = [
@@ -731,12 +734,34 @@ let selectedColor = 'green';
 // ─── STATE ───
 let isAdmin = false;
 
-function getBooks() {
-  try { return JSON.parse(localStorage.getItem('kz_books') || '[]'); } catch { return []; }
+// ─── GOOGLE SHEETS API ───
+let booksCache = null;
+
+async function fetchBooks() {
+  try {
+    showLoading(true);
+    const res = await fetch(API_URL);
+    const json = await res.json();
+    booksCache = json.data || [];
+    showLoading(false);
+    return booksCache;
+  } catch(e) {
+    showLoading(false);
+    showToast('❌ Деректер жүктелмеді!');
+    return [];
+  }
 }
-function saveBooks(books) {
-  localStorage.setItem('kz_books', JSON.stringify(books));
+
+async function apiPost(params) {
+  const res = await fetch(API_URL, {
+    method: 'POST',
+    body: JSON.stringify(params)
+  });
+  return await res.json();
 }
+
+function getBooks() { return booksCache || []; }
+function saveBooks(books) { booksCache = books; }
 
 // ─── AUTH ───
 function openLoginModal() { openModal('loginModal'); document.getElementById('loginInput').focus(); }
@@ -884,54 +909,57 @@ function selectColor(id) {
 
 function closeBookModal() { closeModal('bookModal'); }
 
-function saveBook() {
+async function saveBook() {
   const title = document.getElementById('bookTitle').value.trim();
   if (!title) { document.getElementById('bookError').style.display='block'; return; }
   document.getElementById('bookError').style.display='none';
 
-  const books = getBooks();
   const editId = document.getElementById('editId').value;
   const now = new Date().toLocaleDateString('kk-KZ');
+  const books = getBooks();
+
+  closeBookModal();
+  showToast('⏳ Сақталуда...');
 
   if (editId) {
-    const idx = books.findIndex(b => b.id === editId);
-    if (idx > -1) {
-      books[idx] = { ...books[idx],
-        title, grade: document.getElementById('bookClass').value,
-        subject: document.getElementById('bookSubject').value,
-        desc: document.getElementById('bookDesc').value.trim(),
-        url: document.getElementById('bookUrl').value.trim(),
-        fileData: currentFileData !== null ? currentFileData : books[idx].fileData,
-        fileName: currentFileData !== null ? currentFileName : books[idx].fileName,
-        color: selectedColor
-      };
-    }
-    showToast('✅ Оқулық жаңартылды!');
-  } else {
-    books.unshift({
-      id: Date.now().toString(),
-      title, grade: document.getElementById('bookClass').value,
+    const b = books.find(x => x.id === editId);
+    await apiPost({
+      action: 'edit',
+      id: editId,
+      title,
+      grade: document.getElementById('bookClass').value,
       subject: document.getElementById('bookSubject').value,
       desc: document.getElementById('bookDesc').value.trim(),
       url: document.getElementById('bookUrl').value.trim(),
-      fileData: currentFileData || null,
-      fileName: currentFileName || '',
+      color: selectedColor,
+      date: b ? b.date : now
+    });
+    showToast('✅ Оқулық жаңартылды!');
+  } else {
+    await apiPost({
+      action: 'add',
+      id: Date.now().toString(),
+      title,
+      grade: document.getElementById('bookClass').value,
+      subject: document.getElementById('bookSubject').value,
+      desc: document.getElementById('bookDesc').value.trim(),
+      url: document.getElementById('bookUrl').value.trim(),
       color: selectedColor,
       date: now
     });
     showToast('✅ Оқулық қосылды!');
   }
 
-  saveBooks(books);
-  closeBookModal();
+  await fetchBooks();
   renderBooks();
 }
 
 // ─── DELETE ───
-function deleteBook(id) {
+async function deleteBook(id) {
   if (!confirm('Бұл оқулықты жойғыңыз келе ме?')) return;
-  const books = getBooks().filter(b => b.id !== id);
-  saveBooks(books);
+  showToast('⏳ Жойылуда...');
+  await apiPost({ action: 'delete', id });
+  await fetchBooks();
   renderBooks();
   showToast('🗑️ Оқулық жойылды');
 }
@@ -956,23 +984,20 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 2800);
 }
 
-// ─── INIT ───
-if (sessionStorage.getItem('kz_admin') === '1') { isAdmin = true; }
-
-// Demo data if empty
-if (!getBooks().length) {
-  saveBooks([
-    { id:'d1', title:'Қазақ тілі оқулығы', grade:'5-сынып', subject:'Қазақ тілі',
-      desc:'5-сынып оқушыларына арналған қазақ тілі оқулығы. Грамматика, сөздік, жаттығулар.', url:'', color:'green', date:'01.01.2025' },
-    { id:'d2', title:'Қазақ әдебиеті хрестоматиясы', grade:'7-сынып', subject:'Қазақ әдебиеті',
-      desc:'Қазақ жазушылары мен ақындарының шығармалары жинағы.', url:'', color:'purple', date:'15.02.2025' },
-    { id:'d3', title:'Абай жолы', grade:'10-сынып', subject:'Қазақ әдебиеті',
-      desc:'М. Әуезовтің «Абай жолы» роман-эпопеясы. Толық нұсқа.', url:'', color:'dark', date:'10.03.2025' },
-  ]);
+// ─── LOADING INDICATOR ───
+function showLoading(show) {
+  let el = document.getElementById('loadingBar');
+  if (!el) return;
+  el.style.display = show ? 'flex' : 'none';
 }
 
+// ─── INIT ───
+if (sessionStorage.getItem('kz_admin') === '1') { isAdmin = true; }
 renderColorOptions();
 updateAdminUI();
+
+// Load books from Google Sheets on start
+fetchBooks().then(() => renderBooks());
 
 // ─── FILE HANDLING ───
 let currentFileData = null;
