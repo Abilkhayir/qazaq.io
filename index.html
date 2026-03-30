@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Үрқия Бажымова — Қазақ тілі және әдебиеті</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sky: #1a6b5c;
+    --sky-light: #23a08a;
+    --gold: #e8b84b;
+    --gold-soft: #f5d98a;
+    --cream: #fdf8ef;
+    --dark: #1c1c1e;
+    --mid: #4a4a50;
+    --light: #f0ebe0;
+    --card-bg: #ffffff;
+    --red: #c0392b;
+    --shadow: 0 4px 24px rgba(26,107,92,0.12);
+    --radius: 16px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--cream);
+    color: var(--dark);
+    min-height: 100vh;
+  }
+
+  /* ─── HEADER ─── */
+  header {
+    background: linear-gradient(135deg, var(--sky) 0%, #0f4a3c 100%);
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 80px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.18);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .logo-icon {
+    width: 48px; height: 48px;
+    background: var(--gold);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    flex-shrink: 0;
+  }
+
+  .logo-text h1 {
+    font-family: 'Playfair Display', serif;
+    color: #fff;
+    font-size: 1.25rem;
+    line-height: 1.2;
+  }
+
+  .logo-text p {
+    color: var(--gold-soft);
+    font-size: 0.78rem;
+    font-weight: 300;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .btn {
+    padding: 10px 22px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.88rem;
+    transition: all 0.2s;
+  }
+
+  .btn-gold {
+    background: var(--gold);
+    color: var(--dark);
+  }
+  .btn-gold:hover { background: var(--gold-soft); transform: translateY(-1px); }
+
+  .btn-outline {
+    background: transparent;
+    border: 2px solid rgba(255,255,255,0.5);
+    color: #fff;
+  }
+  .btn-outline:hover { border-color: #fff; background: rgba(255,255,255,0.1); }
+
+  .btn-danger {
+    background: var(--red);
+    color: #fff;
+  }
+  .btn-danger:hover { background: #a93226; }
+
+  .btn-primary {
+    background: var(--sky);
+    color: #fff;
+  }
+  .btn-primary:hover { background: var(--sky-light); }
+
+  .btn-sm { padding: 7px 14px; font-size: 0.8rem; }
+
+  /* ─── HERO BANNER ─── */
+  .hero {
+    background: linear-gradient(160deg, #0f4a3c 0%, var(--sky) 60%, #2ab89a 100%);
+    padding: 64px 32px 72px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    background: rgba(232,184,75,0.12);
+    border-radius: 50%;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -40px;
+    width: 260px; height: 260px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 50%;
+  }
+
+  .hero h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    color: #fff;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero p {
+    color: rgba(255,255,255,0.82);
+    font-size: 1.05rem;
+    max-width: 520px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-ornament {
+    font-size: 3.5rem;
+    margin-bottom: 16px;
+    display: block;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
+  }
+
+  /* ─── MAIN LAYOUT ─── */
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  /* ─── SECTION TITLE ─── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 32px;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--sky);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-title::before {
+    content: '';
+    width: 5px; height: 32px;
+    background: var(--gold);
+    border-radius: 3px;
+    display: inline-block;
+  }
+
+  /* ─── BOOKS GRID ─── */
+  .books-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 24px;
+  }
+
+  .book-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: transform 0.25s, box-shadow 0.25s;
+    border: 1px solid rgba(26,107,92,0.08);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .book-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 36px rgba(26,107,92,0.18);
+  }
+
+  .book-cover {
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .book-cover-inner {
+    position: relative;
+    z-index: 1;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.25));
+  }
+
+  .book-body {
+    padding: 20px 20px 16px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .book-class {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 6px;
+  }
+
+  .book-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    color: var(--dark);
+    margin-bottom: 6px;
+    line-height: 1.4;
+  }
+
+  .book-desc {
+    font-size: 0.82rem;
+    color: var(--mid);
+    line-height: 1.5;
+    flex: 1;
+    margin-bottom: 14px;
+  }
+
+  .book-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding-top: 12px;
+    border-top: 1px solid var(--light);
+  }
+
+  .book-date {
+    font-size: 0.75rem;
+    color: #999;
+  }
+
+  .book-actions { display: flex; gap: 6px; }
+
+  .btn-view {
+    background: var(--sky);
+    color: #fff;
+    text-decoration: none;
+    padding: 7px 14px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    transition: background 0.2s;
+    display: inline-block;
+  }
+  .btn-view:hover { background: var(--sky-light); }
+
+  /* ─── EMPTY STATE ─── */
+  .empty-state {
+    text-align: center;
+    padding: 80px 24px;
+    color: var(--mid);
+  }
+  .empty-state .empty-icon { font-size: 4rem; margin-bottom: 16px; display: block; }
+  .empty-state h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: 8px; color: var(--sky); }
+  .empty-state p { font-size: 0.9rem; }
+
+  /* ─── MODAL ─── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+  .modal {
+    background: #fff;
+    border-radius: 20px;
+    padding: 36px 36px 32px;
+    width: 100%;
+    max-width: 460px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    transform: translateY(20px);
+    transition: transform 0.25s;
+  }
+  .modal-overlay.open .modal { transform: translateY(0); }
+
+  .modal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--sky);
+    margin-bottom: 6px;
+  }
+  .modal-sub { font-size: 0.85rem; color: var(--mid); margin-bottom: 28px; }
+
+  .form-group { margin-bottom: 18px; }
+  .form-group label {
+    display: block;
+    font-weight: 700;
+    font-size: 0.83rem;
+    color: var(--mid);
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+  }
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    padding: 11px 14px;
+    border: 2px solid #e8e8ee;
+    border-radius: 10px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.92rem;
+    color: var(--dark);
+    transition: border-color 0.2s;
+    background: #fafafa;
+    outline: none;
+  }
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    border-color: var(--sky-light);
+    background: #fff;
+  }
+  .form-group textarea { resize: vertical; min-height: 80px; }
+
+  .modal-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 24px;
+    justify-content: flex-end;
+  }
+
+  .error-msg {
+    color: var(--red);
+    font-size: 0.82rem;
+    margin-top: 8px;
+    font-weight: 600;
+  }
+
+  /* ─── ADMIN PANEL TOP BAR ─── */
+  .admin-bar {
+    background: linear-gradient(90deg, #fff8e8, #fffdf6);
+    border: 2px solid var(--gold);
+    border-radius: 14px;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 36px;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .admin-bar-left { display: flex; align-items: center; gap: 12px; }
+  .admin-badge {
+    background: var(--gold);
+    color: var(--dark);
+    font-weight: 700;
+    font-size: 0.78rem;
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+  }
+  .admin-bar p { font-size: 0.88rem; color: var(--mid); }
+
+  /* ─── COLOR OPTIONS ─── */
+  .color-options {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+  .color-opt {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    border: 3px solid transparent;
+    cursor: pointer;
+    transition: transform 0.15s, border-color 0.15s;
+  }
+  .color-opt:hover { transform: scale(1.15); }
+  .color-opt.selected { border-color: var(--dark); }
+
+  /* ─── TAGS ─── */
+  .tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+
+  /* ─── TOAST ─── */
+  .toast {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    background: var(--sky);
+    color: #fff;
+    padding: 14px 22px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.88rem;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    z-index: 9999;
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.3s;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    text-align: center;
+    padding: 32px 24px;
+    color: #aaa;
+    font-size: 0.8rem;
+    border-top: 1px solid #e8e8e0;
+  }
+
+  @media (max-width: 600px) {
+    header { padding: 0 16px; }
+    .hero { padding: 44px 16px 52px; }
+    main { padding: 32px 16px 60px; }
+    .modal { padding: 28px 22px 24px; }
+    .books-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <div class="logo-icon">📖</div>
+    <div class="logo-text">
+      <h1>Үрқия Бажымова</h1>
+      <p>Қазақ тілі және әдебиеті мұғалімі</p>
+    </div>
+  </div>
+  <div class="header-right">
+    <span id="adminBadgeHeader" style="display:none;" class="admin-badge">Мұғалім</span>
+    <button class="btn btn-outline" id="loginBtn" onclick="openLoginModal()">🔑 Кіру</button>
+    <button class="btn btn-danger" id="logoutBtn" style="display:none;" onclick="logout()">Шығу</button>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <span class="hero-ornament">📚</span>
+  <h2>Үрқия Бажымованың оқулықтар қоры</h2>
+  <p>Қазақ тілі және әдебиеті пәні бойынша оқу материалдары мен оқулықтар жинағы</p>
+</div>
+
+<!-- MAIN -->
+<main>
+  <!-- Admin bar (visible when logged in) -->
+  <div class="admin-bar" id="adminBar" style="display:none;">
+    <div class="admin-bar-left">
+      <span class="admin-badge">👩‍🏫 Мұғалім режимі</span>
+      <p>Оқулық қосу, өңдеу және жою мүмкіндігі белсенді</p>
+    </div>
+    <button class="btn btn-gold" onclick="openAddModal()">+ Оқулық қосу</button>
+  </div>
+
+  <!-- Section header -->
+  <div class="section-header">
+    <div class="section-title">Барлық оқулықтар</div>
+    <span id="bookCount" style="font-size:0.85rem;color:var(--mid);"></span>
+  </div>
+
+  <!-- Books grid -->
+  <div class="books-grid" id="booksGrid">
+    <!-- Rendered by JS -->
+  </div>
+</main>
+
+<footer>
+  © 2025 · Үрқия Бажымова · Қазақ тілі және әдебиеті пәні мұғалімі
+</footer>
+
+<!-- ═══════════════════ MODALS ═══════════════════ -->
+
+<!-- Login Modal -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal">
+    <div class="modal-title">🔐 Мұғалім кабинеті</div>
+    <div class="modal-sub">Кіру үшін логин мен парольді енгізіңіз</div>
+    <div class="form-group">
+      <label>ЛОГИН</label>
+      <input type="text" id="loginInput" placeholder="логинді енгізіңіз" autocomplete="username">
+    </div>
+    <div class="form-group">
+      <label>ПАРОЛЬ</label>
+      <input type="password" id="passwordInput" placeholder="••••••••" autocomplete="current-password"
+             onkeydown="if(event.key==='Enter') doLogin()">
+    </div>
+    <div class="error-msg" id="loginError" style="display:none;">❌ Логин немесе пароль қате!</div>
+    <div class="modal-buttons">
+      <button class="btn btn-outline" style="border-color:#ccc;color:var(--mid);" onclick="closeLoginModal()">Бас тарту</button>
+      <button class="btn btn-primary" onclick="doLogin()">Кіру →</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit Book Modal -->
+<div class="modal-overlay" id="bookModal">
+  <div class="modal" style="max-width:520px;">
+    <div class="modal-title" id="bookModalTitle">📚 Оқулық қосу</div>
+    <div class="modal-sub">Оқулық туралы мәліметтерді толтырыңыз</div>
+
+    <input type="hidden" id="editId">
+
+    <div class="form-group">
+      <label>ОҚУЛЫҚ АТЫ *</label>
+      <input type="text" id="bookTitle" placeholder="мысалы: Қазақ тілі 5-сынып">
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="form-group">
+        <label>СЫНЫП</label>
+        <select id="bookClass">
+          <option value="">— Таңдаңыз —</option>
+          <option>1-сынып</option><option>2-сынып</option><option>3-сынып</option>
+          <option>4-сынып</option><option>5-сынып</option><option>6-сынып</option>
+          <option>7-сынып</option><option>8-сынып</option><option>9-сынып</option>
+          <option>10-сынып</option><option>11-сынып</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>ПӘНІ</label>
+        <select id="bookSubject">
+          <option value="Қазақ тілі">Қазақ тілі</option>
+          <option value="Қазақ әдебиеті">Қазақ әдебиеті</option>
+          <option value="Екеуі де">Екеуі де</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>СИПАТТАМА</label>
+      <textarea id="bookDesc" placeholder="Оқулық туралы қысқаша ақпарат..."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>ОҚУЛЫҚҚА СІЛТЕМЕ (URL немесе Google Drive сілтемесі)</label>
+      <input type="url" id="bookUrl" placeholder="https://...">
+    </div>
+
+    <div class="form-group">
+      <label>МҰҚАБА ТҮСІ</label>
+      <div class="color-options" id="colorOptions">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
+    <div class="error-msg" id="bookError" style="display:none;">❌ Оқулық атын міндетті түрде жазыңыз!</div>
+
+    <div class="modal-buttons">
+      <button class="btn btn-outline" style="border-color:#ccc;color:var(--mid);" onclick="closeBookModal()">Бас тарту</button>
+      <button class="btn btn-gold" onclick="saveBook()">💾 Сақтау</button>
+    </div>
+  </div>
+</div>
+
+<!-- View Book Modal -->
+<div class="modal-overlay" id="viewModal">
+  <div class="modal">
+    <div id="viewContent"></div>
+    <div class="modal-buttons" style="margin-top:20px;">
+      <button class="btn btn-outline" style="border-color:#ccc;color:var(--mid);" onclick="closeViewModal()">Жабу</button>
+      <a id="viewOpenLink" class="btn btn-primary" target="_blank" style="text-decoration:none;display:none;">🌐 Ашу →</a>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── CONFIG: Логин мен парольді осында өзгертіңіз ───
+const ADMIN_LOGIN = "mugalim";      // ← логинді осы жерде өзгертіңіз
+const ADMIN_PASS  = "qazaq2025";   // ← парольді осы жерде өзгертіңіз
+
+// ─── COVER COLORS ───
+const COVERS = [
+  { id:'green',  bg:'linear-gradient(135deg,#1a6b5c,#2ab89a)', emoji:'📗' },
+  { id:'blue',   bg:'linear-gradient(135deg,#1a4a7a,#2980b9)', emoji:'📘' },
+  { id:'red',    bg:'linear-gradient(135deg,#922b21,#e74c3c)', emoji:'📕' },
+  { id:'gold',   bg:'linear-gradient(135deg,#b7770d,#e8b84b)', emoji:'📙' },
+  { id:'purple', bg:'linear-gradient(135deg,#6c3483,#9b59b6)', emoji:'📓' },
+  { id:'dark',   bg:'linear-gradient(135deg,#2c3e50,#546e7a)', emoji:'📔' },
+];
+let selectedColor = 'green';
+
+// ─── STATE ───
+let isAdmin = false;
+
+function getBooks() {
+  try { return JSON.parse(localStorage.getItem('kz_books') || '[]'); } catch { return []; }
+}
+function saveBooks(books) {
+  localStorage.setItem('kz_books', JSON.stringify(books));
+}
+
+// ─── AUTH ───
+function openLoginModal() { openModal('loginModal'); document.getElementById('loginInput').focus(); }
+function closeLoginModal() { closeModal('loginModal'); clearLoginForm(); }
+
+function doLogin() {
+  const login = document.getElementById('loginInput').value.trim();
+  const pass  = document.getElementById('passwordInput').value;
+  if (login === ADMIN_LOGIN && pass === ADMIN_PASS) {
+    isAdmin = true;
+    sessionStorage.setItem('kz_admin','1');
+    closeModal('loginModal');
+    clearLoginForm();
+    updateAdminUI();
+    showToast('✅ Сәтті кірдіңіз!');
+  } else {
+    document.getElementById('loginError').style.display = 'block';
+    document.getElementById('passwordInput').value = '';
+  }
+}
+
+function logout() {
+  isAdmin = false;
+  sessionStorage.removeItem('kz_admin');
+  updateAdminUI();
+  showToast('👋 Шықтыңыз');
+}
+
+function clearLoginForm() {
+  document.getElementById('loginInput').value = '';
+  document.getElementById('passwordInput').value = '';
+  document.getElementById('loginError').style.display = 'none';
+}
+
+function updateAdminUI() {
+  document.getElementById('loginBtn').style.display  = isAdmin ? 'none' : '';
+  document.getElementById('logoutBtn').style.display = isAdmin ? '' : 'none';
+  document.getElementById('adminBar').style.display  = isAdmin ? '' : 'none';
+  document.getElementById('adminBadgeHeader').style.display = isAdmin ? '' : 'none';
+  renderBooks();
+}
+
+// ─── RENDER BOOKS ───
+function renderBooks() {
+  const books = getBooks();
+  const grid  = document.getElementById('booksGrid');
+  const count = document.getElementById('bookCount');
+  count.textContent = `Барлығы: ${books.length} оқулық`;
+
+  if (!books.length) {
+    grid.innerHTML = `
+      <div class="empty-state" style="grid-column:1/-1;">
+        <span class="empty-icon">📭</span>
+        <h3>Оқулықтар жоқ</h3>
+        <p>Мұғалім оқулықтар қосқан соң бұл жерде көрінеді</p>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = books.map(b => {
+    const cover = COVERS.find(c => c.id === b.color) || COVERS[0];
+    const subjectColor = b.subject === 'Қазақ тілі' ? '#1a6b5c'
+                       : b.subject === 'Қазақ әдебиеті' ? '#6c3483' : '#b7770d';
+    const adminBtns = isAdmin ? `
+      <div class="book-actions">
+        <button class="btn btn-sm btn-outline" style="border-color:var(--sky);color:var(--sky);" onclick="editBook('${b.id}')">✏️</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteBook('${b.id}')">🗑️</button>
+      </div>` : '';
+
+    return `
+      <div class="book-card">
+        <div class="book-cover" style="background:${cover.bg};">
+          <span class="book-cover-inner">${cover.emoji}</span>
+        </div>
+        <div class="book-body">
+          ${b.grade ? `<div class="book-class" style="color:${subjectColor};">${b.grade} · ${b.subject}</div>` : `<div class="book-class" style="color:${subjectColor};">${b.subject}</div>`}
+          <div class="book-title">${esc(b.title)}</div>
+          <div class="book-desc">${esc(b.desc || 'Сипаттама жоқ')}</div>
+          <div class="book-footer">
+            <span class="book-date">${b.date}</span>
+            <div style="display:flex;gap:6px;align-items:center;">
+              ${b.url ? `<a class="btn-view" href="${esc(b.url)}" target="_blank">Ашу ↗</a>` : `<button class="btn-view" style="background:#ccc;cursor:default;">Сілтеме жоқ</button>`}
+              ${adminBtns}
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ─── ADD / EDIT MODAL ───
+function openAddModal() {
+  document.getElementById('bookModalTitle').textContent = '📚 Оқулық қосу';
+  document.getElementById('editId').value = '';
+  document.getElementById('bookTitle').value = '';
+  document.getElementById('bookClass').value = '';
+  document.getElementById('bookSubject').value = 'Қазақ тілі';
+  document.getElementById('bookDesc').value = '';
+  document.getElementById('bookUrl').value = '';
+  document.getElementById('bookError').style.display = 'none';
+  selectedColor = 'green';
+  renderColorOptions();
+  openModal('bookModal');
+}
+
+function editBook(id) {
+  const books = getBooks();
+  const b = books.find(x => x.id === id);
+  if (!b) return;
+  document.getElementById('bookModalTitle').textContent = '✏️ Оқулықты өңдеу';
+  document.getElementById('editId').value = id;
+  document.getElementById('bookTitle').value = b.title;
+  document.getElementById('bookClass').value = b.grade || '';
+  document.getElementById('bookSubject').value = b.subject || 'Қазақ тілі';
+  document.getElementById('bookDesc').value = b.desc || '';
+  document.getElementById('bookUrl').value = b.url || '';
+  document.getElementById('bookError').style.display = 'none';
+  selectedColor = b.color || 'green';
+  renderColorOptions();
+  openModal('bookModal');
+}
+
+function renderColorOptions() {
+  document.getElementById('colorOptions').innerHTML = COVERS.map(c => `
+    <div class="color-opt ${selectedColor===c.id?'selected':''}"
+         style="background:${c.bg};"
+         onclick="selectColor('${c.id}')"
+         title="${c.emoji}"></div>
+  `).join('');
+}
+
+function selectColor(id) {
+  selectedColor = id;
+  renderColorOptions();
+}
+
+function closeBookModal() { closeModal('bookModal'); }
+
+function saveBook() {
+  const title = document.getElementById('bookTitle').value.trim();
+  if (!title) { document.getElementById('bookError').style.display='block'; return; }
+  document.getElementById('bookError').style.display='none';
+
+  const books = getBooks();
+  const editId = document.getElementById('editId').value;
+  const now = new Date().toLocaleDateString('kk-KZ');
+
+  if (editId) {
+    const idx = books.findIndex(b => b.id === editId);
+    if (idx > -1) {
+      books[idx] = { ...books[idx],
+        title, grade: document.getElementById('bookClass').value,
+        subject: document.getElementById('bookSubject').value,
+        desc: document.getElementById('bookDesc').value.trim(),
+        url: document.getElementById('bookUrl').value.trim(),
+        color: selectedColor
+      };
+    }
+    showToast('✅ Оқулық жаңартылды!');
+  } else {
+    books.unshift({
+      id: Date.now().toString(),
+      title, grade: document.getElementById('bookClass').value,
+      subject: document.getElementById('bookSubject').value,
+      desc: document.getElementById('bookDesc').value.trim(),
+      url: document.getElementById('bookUrl').value.trim(),
+      color: selectedColor,
+      date: now
+    });
+    showToast('✅ Оқулық қосылды!');
+  }
+
+  saveBooks(books);
+  closeBookModal();
+  renderBooks();
+}
+
+// ─── DELETE ───
+function deleteBook(id) {
+  if (!confirm('Бұл оқулықты жойғыңыз келе ме?')) return;
+  const books = getBooks().filter(b => b.id !== id);
+  saveBooks(books);
+  renderBooks();
+  showToast('🗑️ Оқулық жойылды');
+}
+
+// ─── MODAL HELPERS ───
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function closeViewModal() { closeModal('viewModal'); }
+
+// Close modals on overlay click
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) overlay.classList.remove('open');
+  });
+});
+
+// ─── TOAST ───
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ─── INIT ───
+if (sessionStorage.getItem('kz_admin') === '1') { isAdmin = true; }
+
+// Demo data if empty
+if (!getBooks().length) {
+  saveBooks([
+    { id:'d1', title:'Қазақ тілі оқулығы', grade:'5-сынып', subject:'Қазақ тілі',
+      desc:'5-сынып оқушыларына арналған қазақ тілі оқулығы. Грамматика, сөздік, жаттығулар.', url:'', color:'green', date:'01.01.2025' },
+    { id:'d2', title:'Қазақ әдебиеті хрестоматиясы', grade:'7-сынып', subject:'Қазақ әдебиеті',
+      desc:'Қазақ жазушылары мен ақындарының шығармалары жинағы.', url:'', color:'purple', date:'15.02.2025' },
+    { id:'d3', title:'Абай жолы', grade:'10-сынып', subject:'Қазақ әдебиеті',
+      desc:'М. Әуезовтің «Абай жолы» роман-эпопеясы. Толық нұсқа.', url:'', color:'dark', date:'10.03.2025' },
+  ]);
+}
+
+renderColorOptions();
+updateAdminUI();
+</script>
+</body>
+</html>
